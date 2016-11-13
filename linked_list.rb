@@ -123,6 +123,52 @@ class LinkedList
     s += "nil"
   end
 
+  # Inserts the given data at the given index
+  # Returns nil if index is out of bounds
+  def insert_at(index, data=nil)
+    if index == 0
+      prepend(data)
+    elsif index < 0 || index >= self.size
+      nil
+    else
+      new_node = Node.new(data)
+      count = 0
+      node = @head
+      until index - 1 == count
+        node = node.next_node
+        count += 1
+      end
+      new_node.next_node = node.next_node
+      node.next_node = new_node
+    end
+  end
+
+  # Removes the node at the given index and
+  # returns the removed element (nil if nothing to remove)
+  def remove_at(index)
+    if self.size == 0 || index < 0 || index >= self.size
+      nil
+    elsif self.size == 1
+      @head = nil
+      @tail = nil
+    elsif index == 0
+      removed = @head
+      @head = removed.next_node
+      removed
+    else
+      count = 0
+      node = @head
+      until index - 1 == count
+        node = node.next_node
+        count += 1
+      end
+      removed = node.next_node
+      node.next_node = node.next_node.next_node
+      @tail = node if node.next_node.nil?
+      removed
+    end
+  end
+
 end
 
 # Represents a singular list in the linked list
@@ -135,3 +181,9 @@ class Node
   end
 
 end
+
+a = LinkedList.new
+a.append('a')
+a.append('b')
+a.append('c')
+a.append('d')
